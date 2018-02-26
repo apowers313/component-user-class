@@ -5,11 +5,8 @@ var {
     Credential
 } = require("../index.js");
 var Component = require("component-class");
-var {
-    ComponentManager
-} = require("simple-component-manager");
-
 var assert = require("chai").assert;
+var sinon = require("sinon");
 
 var dummyComponentManager = {
     registerType: function() {},
@@ -26,8 +23,24 @@ var dummyComponentManager = {
     typeList: new Map()
 };
 
-class dummyUdsClass extends Component {}
-var dummyUds = new dummyUdsClass(new ComponentManager());
+class dummyUdsClass extends Component {
+    saveUser() {
+        return Promise.resolve();
+    }
+    deleteUser() {
+        return Promise.resolve();
+    }
+    findCredentials() {
+        return Promise.resolve();
+    }
+    saveCredential() {
+        return Promise.resolve();
+    }
+    deleteCredential() {
+        return Promise.resolve();
+    }
+}
+var dummyUds = new dummyUdsClass(dummyComponentManager);
 
 var dummyLogger = {
     create: function() {
@@ -42,8 +55,14 @@ var dummyLogger = {
 };
 
 describe("user", function() {
+    it("can be updated");
+    it("can be initialized");
     it("can get updates");
     it("can get complete object");
+    it("can be committed");
+    it("can be destroyed");
+    it("can create credential with associated user");
+    it("can find all credentials with associated user");
 
     describe("getJournal", function() {
         var u;
@@ -112,11 +131,9 @@ describe("user", function() {
             });
 
             assert.isObject(ret);
-            console.log("ret", ret);
             var expected = {
                 const: true // never updated
             };
-            console.log("expected", expected);
             assert.deepEqual(ret, expected);
 
         });
@@ -146,6 +163,47 @@ describe("user", function() {
 });
 
 describe("credential", function() {
+    var saveUserSpy;
+    var deleteUserSpy;
+    var findCredentialsSpy;
+    var saveCredentialSpy;
+    var deleteCredentialSpy;
+    beforeEach(function() {
+        saveUserSpy = sinon.spy(dummyUds, "saveUser");
+        deleteUserSpy = sinon.spy(dummyUds, "deleteUser");
+        findCredentialsSpy = sinon.spy(dummyUds, "findCredentials");
+        saveCredentialSpy = sinon.spy(dummyUds, "saveCredential");
+        deleteCredentialSpy = sinon.spy(dummyUds, "deleteCredential");
+    });
+
+    afterEach(function() {
+        dummyUds.saveUser.restore();
+        dummyUds.deleteUser.restore();
+        dummyUds.findCredentials.restore();
+        dummyUds.saveCredential.restore();
+        dummyUds.deleteCredential.restore();
+    });
+
+    it("can be created", function() {
+        var c = new Credential(dummyUds);
+        assert.instanceOf(c, Credential);
+    });
+
     it("can update credential");
     it("can set credential attributes");
+    it("can be updated");
+
+    it("can be committed", function() {
+        var c = new Credential(dummyUds);
+        var p = c.commit();
+        assert.instanceOf (p, Promise);
+        assert.strictEqual(saveCredentialSpy.callCount, 1);
+    });
+
+    it("can be destroyed", function() {
+        var c = new Credential(dummyUds);
+        var p = c.destroy();
+        assert.instanceOf (p, Promise);
+        assert.strictEqual(deleteCredentialSpy.callCount, 1);
+    });
 });

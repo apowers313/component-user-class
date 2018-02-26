@@ -32,7 +32,6 @@
     "jsdoc": "^3.4.3",
     "mocha": "^2.5.3",
     "mockery": "^2.0.0",
-    "simple-component-manager": "/Users/apowers/Projects/components/simple-component-manager",
     "sinon": "^1.17.6"
   },
   "dependencies": {
