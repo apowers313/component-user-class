@@ -23,24 +23,29 @@ var dummyComponentManager = {
     typeList: new Map()
 };
 
-class dummyUdsClass extends Component {
+class DummyUdsClass extends Component {
     saveUser() {
         return Promise.resolve();
     }
+
     deleteUser() {
         return Promise.resolve();
     }
+
     findCredentials() {
         return Promise.resolve();
     }
+
     saveCredential() {
         return Promise.resolve();
     }
-    deleteCredential() {
+
+    destroyCredential() {
         return Promise.resolve();
     }
 }
-var dummyUds = new dummyUdsClass(dummyComponentManager);
+
+var dummyUds = new DummyUdsClass(dummyComponentManager);
 
 var dummyLogger = {
     create: function() {
@@ -49,7 +54,7 @@ var dummyLogger = {
                 return function(...msg) {
                     if (turnOnDebugLogging) console.log(...msg);
                 };
-            },
+            }
         });
     }
 };
@@ -167,13 +172,14 @@ describe("credential", function() {
     var deleteUserSpy;
     var findCredentialsSpy;
     var saveCredentialSpy;
-    var deleteCredentialSpy;
+    var destroyCredentialSpy;
+
     beforeEach(function() {
         saveUserSpy = sinon.spy(dummyUds, "saveUser");
         deleteUserSpy = sinon.spy(dummyUds, "deleteUser");
         findCredentialsSpy = sinon.spy(dummyUds, "findCredentials");
         saveCredentialSpy = sinon.spy(dummyUds, "saveCredential");
-        deleteCredentialSpy = sinon.spy(dummyUds, "deleteCredential");
+        destroyCredentialSpy = sinon.spy(dummyUds, "destroyCredential");
     });
 
     afterEach(function() {
@@ -181,7 +187,7 @@ describe("credential", function() {
         dummyUds.deleteUser.restore();
         dummyUds.findCredentials.restore();
         dummyUds.saveCredential.restore();
-        dummyUds.deleteCredential.restore();
+        dummyUds.destroyCredential.restore();
     });
 
     it("can be created", function() {
@@ -196,14 +202,14 @@ describe("credential", function() {
     it("can be committed", function() {
         var c = new Credential(dummyUds);
         var p = c.commit();
-        assert.instanceOf (p, Promise);
+        assert.instanceOf(p, Promise);
         assert.strictEqual(saveCredentialSpy.callCount, 1);
     });
 
     it("can be destroyed", function() {
         var c = new Credential(dummyUds);
         var p = c.destroy();
-        assert.instanceOf (p, Promise);
-        assert.strictEqual(deleteCredentialSpy.callCount, 1);
+        assert.instanceOf(p, Promise);
+        assert.strictEqual(destroyCredentialSpy.callCount, 1);
     });
 });
