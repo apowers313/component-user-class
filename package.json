@@ -1,6 +1,6 @@
 {
   "name": "component-user-class",
-  "version": "1.0.0-alpha1",
+  "version": "^1.0.0",
   "description": "A User class for User Data Storage components",
   "main": "index.js",
   "scripts": {
@@ -35,6 +35,6 @@
     "sinon": "^1.17.6"
   },
   "dependencies": {
-    "component-class": "1.0.0-alpha1"
+    "component-class": "^1.0.0"
   }
 }
