@@ -1,1 +1,3 @@
-Work in progress. Do not use.
+[![Build Status](https://travis-ci.org/apowers313/component-user-class.svg?branch=master)](https://travis-ci.org/apowers313/component-user-class) [![Coverage Status](https://coveralls.io/repos/github/apowers313/component-user-class/badge.svg)](https://coveralls.io/github/apowers313/component-user-class) [![Known Vulnerabilities](https://snyk.io/test/github/apowers313/component-user-class/badge.svg?targetFile=package.json)](https://snyk.io/test/github/apowers313/component-user-class?targetFile=package.json)
+
+Documentation coming soon.
